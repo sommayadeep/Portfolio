@@ -1,3 +1,4 @@
+
 import React, { useRef, useMemo, useEffect, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
@@ -5,7 +6,7 @@ import { Hands, HAND_CONNECTIONS } from '@mediapipe/hands';
 import { Camera } from '@mediapipe/camera_utils';
 
 // Real-time hand tracking - no state locking
-const useHandTracking = () => {
+const useHandTracking = (enabled) => {
     const handsDataRef = useRef({
         hands: [],
         isDetected: false,
@@ -30,6 +31,8 @@ const useHandTracking = () => {
     });
 
     useEffect(() => {
+        if (!enabled) return;
+
         const videoElement = document.getElementById('input_video');
         const canvasElement = document.getElementById('output_canvas');
         
@@ -223,7 +226,7 @@ const useHandTracking = () => {
             }
             hands.close(); 
         };
-    }, []);
+    }, [enabled]);
 
     return handsDataRef;
 };
@@ -337,27 +340,78 @@ const ArcReactorSphere = ({ dataRef }) => {
     );
 };
 
-const BackgroundAnimation = () => {
-    const dataRef = useHandTracking();
+// Simple static animation for when gesture is disabled
+const StaticSphere = () => {
+    const pointsRef = useRef();
+    
+    const particles = useMemo(() => {
+        const count = 3000, radius = 3;
+        const positions = new Float32Array(count * 3);
+        const original = new Float32Array(count * 3);
+        const colors = new Float32Array(count * 3);
+        
+        for (let i = 0; i < count; i++) {
+            const phi = Math.acos(1 - 2 * (i + 0.5) / count);
+            const theta = Math.PI * (1 + Math.sqrt(5)) * i;
+            const x = radius * Math.sin(phi) * Math.cos(theta);
+            const y = radius * Math.sin(phi) * Math.sin(theta);
+            const z = radius * Math.cos(phi);
+            positions.set([x,y,z], i*3); original.set([x,y,z], i*3);
+            const c = new THREE.Color().setHSL(0.55 + (i/count)*0.1, 0.8, 0.5);
+            colors.set([c.r,c.g,c.b], i*3);
+        }
+        return { positions, original, colors, count };
+    }, []);
+
+    useFrame((frameState) => {
+        if (!pointsRef.current) return;
+        const time = frameState.clock.elapsedTime;
+        
+        pointsRef.current.rotation.y = time * 0.1;
+        pointsRef.current.rotation.x = Math.sin(time * 0.2) * 0.1;
+    });
+
+    return (
+        <points ref={pointsRef}>
+            <bufferGeometry>
+                <bufferAttribute attach="attributes-position" count={particles.count} array={particles.positions} itemSize={3} />
+                <bufferAttribute attach="attributes-color" count={particles.count} array={particles.colors} itemSize={3} />
+            </bufferGeometry>
+            <pointsMaterial size={0.03} vertexColors transparent opacity={0.6} blending={THREE.AdditiveBlending} sizeAttenuation />
+        </points>
+    );
+};
+
+const BackgroundAnimation = ({ enabled = false }) => {
+    const dataRef = useHandTracking(enabled);
 
     return (
         <>
-            <video 
-                id="input_video" 
-                className="absolute w-[320px] h-[240px] bottom-4 right-4 opacity-50 rounded-lg" 
-                style={{ transform: 'scaleX(-1)' }}
-                playsInline 
-                autoPlay 
-                muted 
-            />
-            <canvas id="output_canvas" className="absolute w-[320px] h-[240px] bottom-4 right-4 opacity-50 rounded-lg transform scale-x-[-1]" />
-            <canvas id="preview_canvas" className="w-full h-full object-cover transform scale-x-[-1]" />
-            <div className="absolute bottom-2 left-2 text-xs font-mono" style={{ color: dataRef.current.bothFingersClosed ? '#FF00FF' : dataRef.current.gesture === 'spread' ? '#00FF00' : '#FFFF00' }}>
-                {dataRef.current.bothFingersClosed ? 'FIST' : dataRef.current.gesture === 'close' ? 'CLOSE' : dataRef.current.gesture === 'spread' ? 'OPEN' : dataRef.current.gesture === 'idle' ? 'NONE' : '...'}
-            </div>
-            <div className="fixed inset-0 bg-[#010103]">
+            {/* Video elements - only visible when gesture is enabled */}
+            {enabled && (
+                <>
+                    <video 
+                        id="input_video" 
+                        className="absolute w-[320px] h-[240px] bottom-4 right-4 opacity-50 rounded-lg z-50" 
+                        style={{ transform: 'scaleX(-1)' }}
+                        playsInline 
+                        autoPlay 
+                        muted 
+                        aria-hidden="true"
+                    />
+                    <canvas id="output_canvas" className="absolute w-[320px] h-[240px] bottom-4 right-4 opacity-50 rounded-lg transform scale-x-[-1] z-50" aria-hidden="true" />
+                    <div className="absolute bottom-2 left-2 text-xs font-mono z-50" style={{ color: dataRef.current.bothFingersClosed ? '#FF00FF' : dataRef.current.gesture === 'spread' ? '#00FF00' : '#FFFF00' }} aria-live="polite">
+                        {dataRef.current.bothFingersClosed ? 'FIST' : dataRef.current.gesture === 'close' ? 'CLOSE' : dataRef.current.gesture === 'spread' ? 'OPEN' : dataRef.current.gesture === 'idle' ? 'NONE' : '...'}
+                    </div>
+                </>
+            )}
+            
+            {/* Background sphere */}
+            <canvas id="preview_canvas" className="w-full h-full object-cover transform scale-x-[-1]" aria-hidden="true" />
+            
+            <div className="fixed inset-0 bg-[#010103]" aria-hidden="true">
                 <Canvas camera={{ position: [0, 0, 9], fov: 50 }}>
-                    <ArcReactorSphere dataRef={dataRef} />
+                    {enabled ? <ArcReactorSphere dataRef={dataRef} /> : <StaticSphere />}
                 </Canvas>
             </div>
         </>

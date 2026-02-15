@@ -1,16 +1,92 @@
-# React + Vite
+# Portfolio Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, interactive portfolio with hand gesture control and 3D animations.
 
-Currently, two official plugins are available:
+## ✨ Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### 🎮 Hand Gesture Control
+- **Both Hands:** Control the 3D sphere
+  - Move hands together → Shrink sphere
+  - Move hands apart → Expand sphere
+  - Make fists → Glow effect
+  - Move hands → 360° rotation
+  
+- **Single Hand:** Navigation
+  - 0 fingers (fist) → Home
+  - Index finger → Projects
+  - Index + Middle → Skills
+  - Index + Middle + Ring → Contact
 
-## React Compiler
+### 📱 Sections
+- **Hero** - Introduction with animated text
+- **Projects** - 5 featured projects with live demos
+- **Skills** - Technical skills & ML specialization
+- **Contact** - Working contact form (sends to Gmail)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 🎨 Tech Stack
+- React + Vite
+- Tailwind CSS
+- Three.js / React-Three-Fiber
+- MediaPipe Hand Tracking
+- Framer Motion
+- Formspree
 
-## Expanding the ESLint configuration
+## 🚀 Getting Started
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Prerequisites
+- Node.js 18+
+- npm or yarn
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/sommayadeep/PORTFOLIO.git
+cd PORTFOLIO
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+```
+
+### Build for Production
+
+```bash
+npm run build
+```
+
+## 🌐 Deployment
+
+### Vercel (Recommended)
+1. Push code to GitHub
+2. Import project in Vercel
+3. Deploy automatically
+
+### Netlify
+```bash
+npm run build
+# Upload dist folder
+```
+
+## 🔒 Privacy
+
+This portfolio uses your camera for hand gesture control. 
+- Camera access is optional (toggle available)
+- No video is stored or transmitted
+- Permissions are requested only when gesture mode is enabled
+
+## 📄 License
+
+MIT License - feel free to use for your own portfolio!
+
+## 👤 Contact
+
+- **LinkedIn:** https://www.linkedin.com/in/sommayadeep-saha-127baa335
+- **Email:** sommayadeepsaha@gmail.com
+
+---
+
+Built with ❤️ using React & Three.js
+
