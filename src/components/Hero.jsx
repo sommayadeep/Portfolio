@@ -47,7 +47,7 @@ const Hero = () => {
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             className="px-8 py-3 bg-white/5 text-white border border-white/10 rounded-full flex items-center gap-2 hover:bg-white/10 hover:border-neon-purple/50 transition-colors backdrop-blur-md"
-                            onClick={() => window.open('/resume.pdf', '_blank')}
+                            onClick={() => window.open('/cv.pdf', '_blank')}
                         >
                             <Download size={20} /> Resume
                         </motion.button>

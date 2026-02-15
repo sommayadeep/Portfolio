@@ -36,14 +36,14 @@ const Contact = () => {
                     </p>
 
                     <div className="space-y-6">
-                        <a href="mailto:your.email@example.com" className="flex items-center gap-4 text-xl text-gray-300 hover:text-white transition-colors group">
+                        <a href="mailto:sommayadeepsaha@gmail.com" className="flex items-center gap-4 text-xl text-gray-300 hover:text-white transition-colors group">
                             <div className="p-4 rounded-full bg-white/5 group-hover:bg-neon-blue/20 transition-colors">
                                 <Mail className="group-hover:text-neon-blue" />
                             </div>
-                            <span>sommayadeep.saha@example.com</span>
+                            <span>sommayadeepsaha@gmail.com</span>
                         </a>
 
-                        <a href="https://linkedin.com/in/sommayadeep" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 text-xl text-gray-300 hover:text-white transition-colors group">
+                        <a href="https://www.linkedin.com/in/sommayadeep-saha-127baa335" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 text-xl text-gray-300 hover:text-white transition-colors group">
                             <div className="p-4 rounded-full bg-white/5 group-hover:bg-neon-blue/20 transition-colors">
                                 <Linkedin className="group-hover:text-neon-blue" />
                             </div>
