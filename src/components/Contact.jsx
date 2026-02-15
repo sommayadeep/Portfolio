@@ -6,14 +6,28 @@ const Contact = () => {
     const [formData, setFormData] = useState({ name: '', email: '', message: '' });
     const [status, setStatus] = useState(null);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Simulate form submission
         setStatus('sending');
-        setTimeout(() => {
-            setStatus('success');
-            setFormData({ name: '', email: '', message: '' });
-        }, 2000);
+        
+        try {
+            const response = await fetch('https://formspree.io/f/mvzbawdb', {
+                method: 'POST',
+                body: JSON.stringify(formData),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            
+            if (response.ok) {
+                setStatus('success');
+                setFormData({ name: '', email: '', message: '' });
+            } else {
+                setStatus('error');
+            }
+        } catch (error) {
+            setStatus('error');
+        }
     };
 
     return (
@@ -61,6 +75,8 @@ const Contact = () => {
 
                 {/* Contact Form */}
                 <motion.form
+                    action="https://formspree.io/f/mvzbawdb"
+                    method="POST"
                     initial={{ opacity: 0, x: 50 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.6, delay: 0.2 }}
@@ -118,6 +134,10 @@ const Contact = () => {
 
                     {status === 'success' && (
                         <p className="mt-4 text-green-400 text-center text-sm">Message sent successfully!</p>
+                    )}
+                    
+                    {status === 'error' && (
+                        <p className="mt-4 text-red-400 text-center text-sm">Failed to send message. Please try again.</p>
                     )}
                 </motion.form>
             </div>
