@@ -131,7 +131,7 @@ const useHandTracking = (enabled) => {
                     data.avgFingerSpread = totalFingersOpen / (handsArr.length * 5);
                     data.bothFingersClosed = handsArr[0].isClosed && handsArr[1].isClosed;
                     
-                    data.cumulativeRotationY = (1 - avgX) * Math.PI * 2;
+                    data.cumulativeRotationY = avgX * Math.PI * 2;
                     data.cumulativeRotationX = avgY * Math.PI * 2;
                     
                     const dx = handsArr[0].rawX - handsArr[1].rawX;
