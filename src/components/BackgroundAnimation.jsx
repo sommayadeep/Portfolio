@@ -296,10 +296,10 @@ const ArcReactorSphere = ({ dataRef }) => {
             s.rotationX = 0;
         }
 
-        s.scale += (s.targetScale - s.scale) * 0.15;
-        s.glow += (s.targetGlow - s.glow) * 0.2;
-        s.rotation += (s.targetRotation - s.rotation) * 0.1;
-        s.rotationX += (s.targetRotationX - s.rotationX) * 0.1;
+        s.scale += (s.targetScale - s.scale) * 0.08;
+        s.glow += (s.targetGlow - s.glow) * 0.1;
+        s.rotation += (s.targetRotation - s.rotation) * 0.05;
+        s.rotationX += (s.targetRotationX - s.rotationX) * 0.05;
 
         const { position, color } = pointsRef.current.geometry.attributes;
         const sc = s.scale;
@@ -387,25 +387,6 @@ const BackgroundAnimation = ({ enabled = false }) => {
 
     return (
         <>
-            {/* Video elements - only visible when gesture is enabled */}
-            {enabled && (
-                <>
-                    <video 
-                        id="input_video" 
-                        className="absolute w-[320px] h-[240px] bottom-4 right-4 opacity-50 rounded-lg z-50" 
-                        style={{ transform: 'scaleX(-1)' }}
-                        playsInline 
-                        autoPlay 
-                        muted 
-                        aria-hidden="true"
-                    />
-                    <canvas id="output_canvas" className="absolute w-[320px] h-[240px] bottom-4 right-4 opacity-50 rounded-lg transform scale-x-[-1] z-50" aria-hidden="true" />
-                    <div className="absolute bottom-2 left-2 text-xs font-mono z-50" style={{ color: dataRef.current.bothFingersClosed ? '#FF00FF' : dataRef.current.gesture === 'spread' ? '#00FF00' : '#FFFF00' }} aria-live="polite">
-                        {dataRef.current.bothFingersClosed ? 'FIST' : dataRef.current.gesture === 'close' ? 'CLOSE' : dataRef.current.gesture === 'spread' ? 'OPEN' : dataRef.current.gesture === 'idle' ? 'NONE' : '...'}
-                    </div>
-                </>
-            )}
-            
             {/* Background sphere */}
             <canvas id="preview_canvas" className="w-full h-full object-cover transform scale-x-[-1]" aria-hidden="true" />
             
