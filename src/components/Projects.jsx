@@ -38,6 +38,13 @@ const projects = [
         live: 'https://trilingo.netlify.app/',
         github: '#',
     },
+    {
+        title: 'Mahendra Chandra & Sons',
+        description: 'Business website showcasing services, offerings, and contact details for Mahendra Chandra & Sons.',
+        tech: ['Business Website', 'Frontend', 'Responsive Design'],
+        live: 'http://mahendra-chandra-sons.vercel.app',
+        github: 'https://github.com/sommayadeep/MahendraChandra-sons',
+    },
 ];
 
 const ProjectCard = ({ project, index }) => {
